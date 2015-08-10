@@ -77,15 +77,16 @@ Then bundle:
 === General configuration options
 
 You can configure the following default values by overriding these values using <tt>Kaminari.configure</tt> method.
-  default_per_page  # 25 by default
-  max_per_page      # nil by default
-  max_pages         # nil by default
-  window            # 4 by default
-  outer_window      # 0 by default
-  left              # 0 by default
-  right             # 0 by default
-  page_method_name  # :page by default
-  param_name        # :page by default
+  default_per_page      # 25 by default
+  max_per_page          # nil by default
+  max_pages             # nil by default
+  window                # 4 by default
+  outer_window          # 0 by default
+  left                  # 0 by default
+  right                 # 0 by default
+  page_method_name      # :page by default
+  param_name            # :page by default
+  params_on_first_page  # false by default
 
 There's a handy generator that generates the default configuration file into config/initializers directory.
 Run the following generator command, then edit the generated file.
@@ -170,8 +171,8 @@ Run the following generator command, then edit the generated file.
 
 * specifying an alternative views directory (default is <tt>kaminari/</tt>)
 
-    <%= paginate @users, :views_prefix => 'templates/' %>
-  This would search for partials in <tt>app/views/templates/kaminari</tt>. This option makes it easier to do things like A/B testing pagination templates/themes, using new/old templates at the same time as well as better integration with other gems sush as {cells}[https://github.com/apotonick/cells].
+    <%= paginate @users, :views_prefix => 'templates' %>
+  This would search for partials in <tt>app/views/templates/kaminari</tt>. This option makes it easier to do things like A/B testing pagination templates/themes, using new/old templates at the same time as well as better integration with other gems such as {cells}[https://github.com/apotonick/cells].
 
 * the +link_to_next_page+ and +link_to_previous_page+ helper method
 

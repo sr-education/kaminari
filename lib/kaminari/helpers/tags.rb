@@ -8,7 +8,7 @@ module Kaminari
     #
     # The template file should be placed in your app/views/kaminari/ directory
     # with underscored class name (besides the "Tag" class. Tag is an abstract
-    # class, so _tag parital is not needed).
+    # class, so _tag partial is not needed).
     #   e.g.)  PrevLink  ->  app/views/kaminari/_prev_link.html.erb
     #
     # When no matching template were found in your app, the engine's pre
@@ -21,6 +21,12 @@ module Kaminari
         @theme = @options.delete(:theme)
         @views_prefix = @options.delete(:views_prefix)
         @params = template.params.except(*PARAM_KEY_BLACKLIST).merge(@options.delete(:params) || {})
+        # @params in Rails 5 does no more inherits from Hash but composes a Hash
+        if @params.instance_variable_defined?(:@parameters) && !@params.respond_to?(:deep_merge)
+          @params = @params.instance_variable_get :@parameters
+        else
+          @params = @params.with_indifferent_access
+        end
       end
 
       def to_s(locals = {}) #:nodoc:
@@ -35,9 +41,9 @@ module Kaminari
 
       def params_for(page)
         page_params = Rack::Utils.parse_nested_query("#{@param_name}=#{page}")
-        page_params = @params.with_indifferent_access.deep_merge(page_params)
+        page_params = @params.deep_merge(page_params)
 
-        if !Kaminari.config.params_on_first_page && page <= 1
+        if !Kaminari.config.params_on_first_page && (page <= 1)
           # This converts a hash:
           #   from: {other: "params", page: 1}
           #     to: {other: "params", page: nil}
